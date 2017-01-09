@@ -59,6 +59,7 @@ target/
 # Pycharm
 .DS_Store
 .idea/
+.idea/*
 
 # R
 .RData
