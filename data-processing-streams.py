@@ -89,7 +89,7 @@ for item in Letters('b', 'k'):
 # Generator (An generator is an iterator returned by a generator function which uses `yield` statement.)
 def letters_generator():
     current = 'a'
-    while current <= 'd'
+    while current <= 'd':
         yield current
         current = chr(ord(current) + 1)
 
@@ -152,6 +152,7 @@ def map_stream(fn, s):
     """Implement map on a lazily computed linked list."""
     if s is Stream.empty:
         return s
+
     def compute_rest():
         return map_stream(fn, s.rest)
     return Stream(fn(s.first), compute_rest)
@@ -161,6 +162,7 @@ def filter_stream(fn, s):
     """Implement filter on a lazily computed linked list."""
     if s is Stream.empty:
         return s
+
     def compute_rest():
         return filter_stream(fn, s.rest)
     if fn(s.first):
