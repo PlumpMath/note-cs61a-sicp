@@ -7,7 +7,7 @@ from time import sleep
 
 
 def thread_hello():
-    """running the same function thread_say_hello with 2 different threads, prints can happen in any order"""
+    """Running function thread_say_hello in 2 threads."""
     other = threading.Thread(target=thread_say_hello, args=())
     other.start()
     thread_say_hello()
@@ -20,7 +20,7 @@ def thread_say_hello():
 # multiprocessing
 # each interpreter run within a separate process, and the processes do not generally share data
 def process_hello():
-    """analogous to those in threading"""
+    """Analogous to those in threading."""
     other = multiprocessing.Process(target=process_say_hello, args=())
     other.start()
     process_say_hello()
@@ -36,28 +36,24 @@ counter = [0]
 
 def increment():
     count = counter[0]
-    """
-    switch thread during a sequence of atomic operations of incrementing
-    so that counter[0] is accessed concurrently, producing unexpected result sometimes
-    """
     sleep(0)  # the interpreter often does switch at the sleep call
     counter[0] = count + 1
 
 
 other = threading.Thread(target=increment, args=())
 other.start()
-increment()
+increment()  # counter[0] is accessed concurrently
 print('count is now: ', counter[0])
 
 # using synchronized data structure (queue)
-"""
-We have marked the consumer thread as a daemon, which means that the program will not wait for
-that thread to complete before exiting. This allows us to use an infinite loop in the consumer.
-However, we do need to ensure that the main thread exits, but only after all items have been
-consumed from the Queue. The consumer calls the task_done method to inform the Queue that it is
-done processing an item, and the main thread calls the join method, which waits until all items
-have been processed, ensuring that the program exits only after that is the case.
-"""
+
+# We have marked the consumer thread as a daemon, which means that the program will not wait for
+# that thread to complete before exiting. This allows us to use an infinite loop in the consumer.
+# However, we do need to ensure that the main thread exits, but only after all items have been
+# consumed from the Queue. The consumer calls the task_done method to inform the Queue that it is
+# done processing an item, and the main thread calls the join method, which waits until all items
+# have been processed, ensuring that the program exits only after that is the case.
+
 from queue import Queue
 
 queue = Queue()
@@ -65,30 +61,22 @@ queue = Queue()
 
 def synchronized_consume():
     while True:
-        sleep(3)
         print('got an item:', queue.get())
-        """
-        task_done decrements a counter (incremented by "put").
-        when the counter reaches 0, the "queue.join()" call is unblocked
-        """
+        # task_done decrements a counter (incremented by "put").
+        # when the counter reaches 0, the "queue.join()" call is unblocked
         queue.task_done()
 
 
 def synchronized_produce():
     consumer = threading.Thread(target=synchronized_consume, args=())
-    """
-    Mark the worker thread as a daemon so that we don't wait for it to complete before exiting.
-    If the worker threads are non-daemon, their continuing execution prevents the program
-    from stopping irrespective of whether the main thread has finished
-    """
+    # If the worker threads are non-daemon, their continuing execution prevents the program
+    # from stopping irrespective of whether the main thread has finished
     consumer.daemon = True
     consumer.start()
     for i in range(10):
         queue.put(i)
-    """
-    queue.join() blocks the main thread until the workers have processed everything in the queue,
-    however it doesn't block the worker threads, which continue executing the infinite loops
-    """
+    # queue.join() blocks the main thread until the workers have processed everything in the queue,
+    # however it doesn't block the worker threads, which continue executing the infinite loops
     queue.join()
 
 
