@@ -1,9 +1,9 @@
+"""Constructing an abstraction for rational number."""
+
 from math import gcd
-from operator import getitem
-
-# Arithmetic
 
 
+# Define operations
 def add_rat(x, y):
     """Add rational numbers x and y."""
     nx, dx = numer(x), denom(x)
@@ -21,9 +21,7 @@ def eq_rat(x, y):
     return numer(x) * denom(y) == numer(y) * denom(x)
 
 
-# Constructor and selectors
-
-
+# Construct a rational with a tuple
 def make_rat(n, d):
     """Construct a rational number x that represents n/d."""
     return n, d
@@ -31,24 +29,21 @@ def make_rat(n, d):
 
 def numer(x):
     """Return the numerator of rational number x."""
-    return getitem(x, 0)
+    return x[0]
 
 
 def denom(x):
     """Return the denominator of rational number x."""
-    return getitem(x, 1)
+    return x[1]
 
 
-# String conversion
-
-def str_rat(x):
+# Print function
+def print_rat(x):
     """Return a string 'n/d' for numerator n and denominator d."""
-    return '{0}/{1}'.format(numer(x), denom(x))
+    print(numer(x), '/', denom(x))
 
 
 # Improved constructor
-
-
 def make_rat(n, d):
     """Construct a rational number x that represents n/d in lowest terms."""
     g = gcd(n, d)
@@ -56,19 +51,18 @@ def make_rat(n, d):
 
 
 # Functional pair
-
 def make_pair(x, y):
-    """Return a functional pair."""
+    """Return a function that represents a pair."""
 
-    def dispatch(m):
+    def get(m):
         if m == 0:
             return x
         elif m == 1:
             return y
 
-    return dispatch
+    return get
 
 
-def getitem_pair(p, i):
+def select(p, i):
     """Return the element at index i of pair p."""
     return p(i)
