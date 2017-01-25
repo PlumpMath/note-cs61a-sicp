@@ -1,9 +1,9 @@
-"""Lecture 11: Non-local assignment examples."""
+"""Introduction to mutable data and non-local state"""
 
 
+# nonlocal state
 def make_withdraw(balance):
     """Return a withdraw function that draws down balance with each call.
-
     >>> w = make_withdraw(100)
     >>> w(25)
     75
@@ -14,30 +14,21 @@ def make_withdraw(balance):
     """
 
     def withdraw(amount):
-        nonlocal balance  # Declare the name "balance" nonlocal
+        # balance will be bound to the first frame in which balance was already defined
+        # if balance has not previously been bound to a value, the nonlocal call gives an error
+        nonlocal balance
         if amount > balance:
             return 'Insufficient funds'
-        balance -= amount  # Re-bind the existing balance name
-        return balance
-
-    return withdraw
-
-
-def make_withdraw_broken(balance):
-    """Return a withdraw function that draws down balance with each call."""
-
-    def withdraw(amount):
-        # Removed the nonlocal statement
-        if amount > balance:
-            return 'Insufficient funds'
-        balance -= amount  # Error!  There's no balance!
+        # no nonlocal statement is required to access a non-local name,
+        # but only after a nonlocal statement can a function change the binding of names in these frames
+        balance -= amount
         return balance
 
     return withdraw
 
 
 def make_withdraw_useless(balance):
-    """Return a withdraw function that draws down balance with each call."""
+    """Only change the local state."""
 
     def withdraw(amount):
         # Removed the nonlocal statement
