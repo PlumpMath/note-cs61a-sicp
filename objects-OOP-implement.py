@@ -1,6 +1,9 @@
-"""Lecture 16 examples: Implementing OOP"""
+"""Implementing classes and objects using just functions and dictionaries.
+To illustrate that using the object metaphor does not require a special programming language.
+"""
 
 
+# Instances
 def make_instance(cls):
     """Return a new object instance."""
 
@@ -30,6 +33,7 @@ def bind_method(value, instance):
         return value
 
 
+# Classes
 def make_class(attributes, base_class=None):
     """Return a new class.
 
@@ -62,9 +66,10 @@ def init_instance(cls, *args):
     return instance
 
 
+# Using implemented objects
 def make_account_class():
     """Return the Account class, which has deposit and withdraw methods.
-
+    >>> Account = make_account_class()
     >>> jim_acct = Account['new']('Jim')
     >>> jim_acct['get']('holder')
     'Jim'
@@ -113,7 +118,6 @@ Account = make_account_class()
 
 def make_checking_account_class():
     """Return the CheckingAccount class, which imposes a $1 withdrawal fee.
-
     >>> jack_acct = CheckingAccount['new']('Jack')
     >>> jack_acct['get']('interest')
     0.01

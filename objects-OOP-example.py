@@ -1,5 +1,8 @@
+"""Example of Classes and Objects."""
 
-class Account:  # class names are conventionally written using the CapWords convention
+
+class Account:
+    # class names are conventionally written using the CapWords convention
     """A bank account."""
     # class attribute, shared among all instances
     # attribute lookup priorities: 1. instance attributes, 2. class attributes, 3. class methods
